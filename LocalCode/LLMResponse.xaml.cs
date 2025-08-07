@@ -20,6 +20,13 @@ namespace LocalCode
             InitializeComponent();
         }
 
+#if DEBUG
+        public void ReportResponseText()
+        {
+            System.Diagnostics.Debugger.Log(0, "LLMResponse", _markdownBuilder.ToString());
+        }
+#endif
+
         public void SetResponseText(string responseText)
         {
             try

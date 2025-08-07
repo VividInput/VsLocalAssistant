@@ -61,7 +61,7 @@ namespace LocalCode
 
                 chat = new Chat(ollama, "You are an expert software developer engineer");
 
-                var models = await ollama.ListLocalModels();
+                var models = await ollama.ListLocalModelsAsync();
 
                 if (models.Any())
                 {
@@ -164,7 +164,7 @@ namespace LocalCode
                 {
                     try
                     {
-                        await foreach (var stream in chat.Send(queryToAskAI))
+                        await foreach (var stream in chat.SendAsync(queryToAskAI))
                         {
                             await AppendMarkdownAsync(stream, responseControl);
                             //await AppendMarkdownAsync(stream.Response, responseControl);
@@ -176,6 +176,9 @@ namespace LocalCode
                     }
                     finally
                     {
+#if DEBUG
+                        responseControl.ReportResponseText();
+#endif
                         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                         SubmitButton.Content = "Submit";
                         SubmitButton.IsEnabled = true;
