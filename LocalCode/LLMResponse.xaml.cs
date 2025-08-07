@@ -33,7 +33,8 @@ namespace LocalCode
             try
             {
                 _markdownBuilder.Append(responseText);
-                markdownFrame.NavigateToString(Markdown.ToHtml(_markdownBuilder.ToString()));
+                message.Text = _markdownBuilder.ToString();
+                //markdownFrame.NavigateToString(Markdown.ToHtml(_markdownBuilder.ToString()));
                 //Markdownview.Markdown = _markdownBuilder.ToString();
             }
             catch (System.Exception ex)

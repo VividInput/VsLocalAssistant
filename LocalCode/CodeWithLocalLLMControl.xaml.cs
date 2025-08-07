@@ -95,7 +95,7 @@ namespace LocalCode
         public CodeWithLocalLLMControl()
         {
             this.InitializeComponent();
-            InitLocalLLMAsync();
+            //InitLocalLLMAsync();
         }
 
         private async void OnSubmitClickAsync(object sender, RoutedEventArgs e)
@@ -108,9 +108,19 @@ namespace LocalCode
 
         private async void QueryTextBox_KeyDownAsync(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter && SubmitButton.Content.ToString() == "Submit")
+            if (e.Key == System.Windows.Input.Key.Enter)
             {
-                await ExecuteQueryAsync();
+                if (e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.LeftShift) ||
+                    e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.RightShift))
+                {
+                    QueryTextBox.SelectedText = Environment.NewLine;
+                    QueryTextBox.SelectionLength = 0;
+                    QueryTextBox.SelectionStart += 1;
+                }
+                else if (SubmitButton.Content.ToString() == "Submit")
+                {
+                    await ExecuteQueryAsync();
+                }
             }
         }
 

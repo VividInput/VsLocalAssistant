@@ -12,8 +12,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="title"/>
-        <WebBrowser Grid.Row="1" x:Name="markdownFrame"/>
+        <TextBlock Grid.Row="1" Margin="15,10,0,10" TextWrapping="Wrap" x:Name="message"/>
         <!--
+        <WebBrowser Grid.Row="1" x:Name="markdownFrame"/>
         <mdxam:MarkdownScrollViewer x:Name="Markdownview" ScrollViewer.VerticalScrollBarVisibility="Auto" IsSelectionEnabled="True" IsInactiveSelectionHighlightEnabled="True" />
 -->
     </Grid>
