@@ -135,7 +135,11 @@ namespace LocalCode
                 return;
             }
 
-            LLMResponse responseBlock = new LLMResponse();
+            LLMResponse requestBlock = new LLMResponse("You");
+            requestBlock.SetResponseText(query);
+            responseStackPanel.Children.Add(requestBlock);
+
+            LLMResponse responseBlock = new LLMResponse(ollama.SelectedModel);
             responseStackPanel.Margin = new Thickness(10, 30, 10, 10);
             responseStackPanel.Children.Add(responseBlock);
 

@@ -15,9 +15,10 @@ namespace LocalCode
     {
         StringBuilder _markdownBuilder = new StringBuilder();
 
-        public LLMResponse()
+        public LLMResponse(string author)
         {
             InitializeComponent();
+            title.Text = author;
         }
 
 #if DEBUG
@@ -32,7 +33,8 @@ namespace LocalCode
             try
             {
                 _markdownBuilder.Append(responseText);
-                Markdownview.Markdown = _markdownBuilder.ToString();
+                markdownFrame.NavigateToString(Markdown.ToHtml(_markdownBuilder.ToString()));
+                //Markdownview.Markdown = _markdownBuilder.ToString();
             }
             catch (System.Exception ex)
             {
