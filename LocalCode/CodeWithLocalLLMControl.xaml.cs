@@ -3,6 +3,7 @@ using Markdig;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Microsoft.VisualStudio.Threading;
 using Newtonsoft.Json;
 using OllamaSharp;
 using OllamaSharp.Models;
@@ -35,8 +36,6 @@ namespace LocalCode
         OllamaApiClient ollama;
         Chat chat;
 
-        int intGridRow = 1;
-
         public string MarkdownDoc { get; set; } = string.Empty;
 
         public async Task InitLocalLLMAsync()
@@ -52,9 +51,9 @@ namespace LocalCode
                 string apiUrl = optionsPage.ApiUrl;
                 string authToken = optionsPage.AuthToken;
 
-                QueryTextBox.Text = "Ask question here!";
-                SubmitButton.IsEnabled = true;
-                QueryTextBox.IsEnabled = true;
+                queryTextBox.Text = "Ask question here!";
+                submitButton.IsEnabled = true;
+                queryTextBox.IsEnabled = true;
                 cmbModels.IsEnabled = true;
 
                 ollama = new OllamaApiClient(apiUrl);
@@ -81,9 +80,8 @@ namespace LocalCode
                     var result = MessageBox.Show("Could not find local models, please open command prompt and run following \n `ollama pull [Model Name]`", "Code With Local LLM", System.Windows.MessageBoxButton.YesNo);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 throw;
             }
         }
@@ -98,26 +96,27 @@ namespace LocalCode
             //InitLocalLLMAsync();
         }
 
-        private async void OnSubmitClickAsync(object sender, RoutedEventArgs e)
+        private async void submitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SubmitButton.Content.ToString() == "Submit")
+            
+            if (submitButton.Content.ToString() == "Submit")
             {
                 await ExecuteQueryAsync();
             }
         }
 
-        private async void QueryTextBox_KeyDownAsync(object sender, System.Windows.Input.KeyEventArgs e)
+        private async void queryTextBox_KeyDownAsync(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 if (e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.LeftShift) ||
                     e.KeyboardDevice.IsKeyDown(System.Windows.Input.Key.RightShift))
                 {
-                    QueryTextBox.SelectedText = Environment.NewLine;
-                    QueryTextBox.SelectionLength = 0;
-                    QueryTextBox.SelectionStart += 1;
+                    queryTextBox.SelectedText = Environment.NewLine;
+                    queryTextBox.SelectionLength = 0;
+                    queryTextBox.SelectionStart += 1;
                 }
-                else if (SubmitButton.Content.ToString() == "Submit")
+                else if (submitButton.Content.ToString() == "Submit")
                 {
                     await ExecuteQueryAsync();
                 }
@@ -126,22 +125,22 @@ namespace LocalCode
 
         private async Task ExecuteQueryAsync()
         {
-            SubmitButton.Content = "Generating...";
-            SubmitButton.IsEnabled = false;
+            submitButton.Content = "Generating...";
+            submitButton.IsEnabled = false;
             ollama.SelectedModel = cmbModels.SelectedItem.ToString();
             chat.Model = cmbModels.SelectedItem.ToString();
             string selectedCode = GetSelectedText();
 
-            string query = QueryTextBox.Text;
+            string query = queryTextBox.Text;
 
-            QueryTextBox.Text = string.Empty;
+            queryTextBox.Text = string.Empty;
 
-            QueryTextBox.Focus();
+            queryTextBox.Focus();
 
             if (string.IsNullOrWhiteSpace(query))
             {
-                SubmitButton.Content = "Submit";
-                SubmitButton.IsEnabled = true;
+                submitButton.Content = "Submit";
+                submitButton.IsEnabled = true;
                 return;
             }
 
@@ -184,7 +183,7 @@ namespace LocalCode
                             //await AppendMarkdownAsync(stream.Response, responseControl);
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }
@@ -194,8 +193,8 @@ namespace LocalCode
                         responseControl.ReportResponseText();
 #endif
                         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                        SubmitButton.Content = "Submit";
-                        SubmitButton.IsEnabled = true;
+                        submitButton.Content = "Submit";
+                        submitButton.IsEnabled = true;
                     }
                 });
             }

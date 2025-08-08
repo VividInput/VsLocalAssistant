@@ -22,10 +22,10 @@
             </ScrollViewer>
         </Grid>
         <Grid Grid.Row="1" >
-            <TextBox x:Name="QueryTextBox"
+            <TextBox x:Name="queryTextBox"
                      Margin="10"
                      Text="Your question here!"
-                     KeyDown="QueryTextBox_KeyDownAsync"/>
+                     KeyDown="queryTextBox_KeyDownAsync"/>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -35,11 +35,11 @@
             <ComboBox x:Name="cmbModels" Grid.Column="0"
                       Margin="10"
                       ToolTip="Select Local model to ask question"/>
-            <Button x:Name="SubmitButton" Grid.Column="1"
+            <Button x:Name="submitButton" Grid.Column="1"
                     Content="Submit"
                     Padding="18,0"
                     Margin="10"
-                    Click="OnSubmitClickAsync"/>
+                    Click="submitButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>

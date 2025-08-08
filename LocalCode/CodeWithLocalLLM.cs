@@ -27,7 +27,7 @@ namespace LocalCode
             this.Caption = "Code With Local AI";
 
             this.Content = new CodeWithLocalLLMControl();
-            InitLocalLLMInLocalControlAsync();
+            var _ = InitLocalLLMInLocalControlAsync(); // Suppressing not awaited async call
         }
 
         public async Task InitLocalLLMInLocalControlAsync()
